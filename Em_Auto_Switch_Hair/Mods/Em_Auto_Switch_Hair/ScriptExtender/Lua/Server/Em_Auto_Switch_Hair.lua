@@ -1,4 +1,10 @@
 
+-- The main variables to mess with are oldHair, dayHair, nightHair, and targetCharacter.
+-- oldHair = The day hair that's currently on the character. Only necessary if you are swapping day hairs mid-game, otherwise, you can leave it empty.
+-- dayHair = The hair you want to display during day/armor set.
+-- nightHair = The hair you want to display during night/camp set.
+-- targetCharacter = The character you want this to apply to.
+
 -- Most of this code was written by wesslen. Thank you!
 
 local function OnSessionLoaded()
@@ -24,12 +30,11 @@ function SetHairOverride(character, newHair)
 	end
 end
 
---[[ local switchPlayer = Osi.DB_Avatars:Get(nil)[1][1]
-local targetCharacter = switchPlayer -- Sets the target character to the character you started the game with ]]
+local oldHair = "" -- Old hair, if you want to change the day hair mid-game
 local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
 local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
 
-local allHairs = { nightHair, dayHair }
+local allHairs = { oldHair, nightHair, dayHair }
 
 local function locApplyDayHair()
 	SetHairOverride(targetCharacter, dayHair)
@@ -48,7 +53,8 @@ end
 
 local locInited = false
 local function locInit()
-	targetCharacter = Osi.DB_Avatars:Get(nil)[1][1] -- This sets the target player to your avatar. If you want it to apply to a companion instead, place their UUID here.
+	targetCharacter = Osi.DB_Avatars:Get(nil)[1][1] -- This sets the target player to your avatar. If you want it to apply to a companion instead, place their UUID here. Example code commented out below.
+	-- targetCharacter = "00000000-0000-0000-0000-000000000000"
 	if locInited then
 		return
 	end
