@@ -7,3 +7,4 @@ Currently, you cannot change the hair mid-game by any means. It will cause multi
 **Credits:**
 
 Part of the script was written by Wesslen.
+Thanks also to Norbyte, Astralities, commanderstrawberry, whatsontheflip, kelocena, and c__hampagne for assistance with this mod.
