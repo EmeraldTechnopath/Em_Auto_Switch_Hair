@@ -1,0 +1,5 @@
+{
+    "RequiredVersion": 15,
+    "ModTable": "Em_Auto_Switch_Hair",
+    "FeatureFlags": ["Lua"]
+}
