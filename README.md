@@ -7,6 +7,10 @@ This script auto-switches your character's (or a companion, if you set it that w
 - It seems like you can change the "nighttime" hair at any time by just changing the nightHair variable.
 - Multiplayer or multi-Tav games won't work since you'd have multiple players at once. You could potentially get around this by setting the targetCharacter to your Tav's UUID.
 
+**Permissions:**
+
+You are welcome to use my script in your mod. Please credit back to this page!
+
 **Credits:**
 
 Part of the script was written by Wesslen.
