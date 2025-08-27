@@ -4,16 +4,16 @@
 -- oldHair = The day hair that's currently on the character. Only necessary if you are swapping day hairs mid-game, otherwise, you can leave it empty.
 -- dayHair = The hair you want to display during day/armor set.
 -- nightHair = The hair you want to display during night/camp set.
--- dayExtension = Daytime hair extension or other CC item.
--- nightExtension = Nighttime hair extension or other CC item.
+-- dayExtension = Daytime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
+-- nightExtension = Nighttime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
 -- targetCharacter = The character you want this to apply to.
 
--- Most of this code was written by wesslen. Thank you!
+-- Much of this code was written by wesslen. Thank you!
 
 local oldHair = "" -- Old hair, if you want to change the day hair mid-game
 local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
 local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
-local dayExtension = "33fb7410-0373-44ce-8652-4a213e1dc470" -- Daytime hair extension or other CC item
+local dayExtension = "" -- Daytime hair extension or other CC item
 local nightExtension = "46f339ee-f5ee-460e-9526-9d0884d9926c" -- Nighttime hair extension or other CC item
 
 local function OnSessionLoaded()
@@ -81,7 +81,7 @@ end
 
 local locInited = false
 local function locInit()
-	targetCharacter = Osi.DB_Avatars:Get(nil)[1][1] -- This sets the target player to your avatar. If you want it to apply to a companion instead, place their UUID here. Example code commented out below.
+	targetCharacter = Osi.DB_Avatars:Get(nil)[1][1] -- This sets the target character to your avatar. If you want it to apply to a companion instead, place their UUID here. Example code commented out below.
 	-- targetCharacter = "00000000-0000-0000-0000-000000000000"
 	if locInited then
 		return
