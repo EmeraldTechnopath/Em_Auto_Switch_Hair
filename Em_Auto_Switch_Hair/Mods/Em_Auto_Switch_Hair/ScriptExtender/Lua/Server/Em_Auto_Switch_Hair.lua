@@ -1,11 +1,20 @@
 
 -- The main variables to mess with are oldHair, dayHair, nightHair, and targetCharacter.
+-- Use dayExtension and nightExtension if you want hair extensions or some other CC item as well.
 -- oldHair = The day hair that's currently on the character. Only necessary if you are swapping day hairs mid-game, otherwise, you can leave it empty.
 -- dayHair = The hair you want to display during day/armor set.
 -- nightHair = The hair you want to display during night/camp set.
+-- dayExtension = Daytime hair extension or other CC item.
+-- nightExtension = Nighttime hair extension or other CC item.
 -- targetCharacter = The character you want this to apply to.
 
 -- Most of this code was written by wesslen. Thank you!
+
+local oldHair = "" -- Old hair, if you want to change the day hair mid-game
+local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
+local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
+local dayExtension = "33fb7410-0373-44ce-8652-4a213e1dc470" -- Daytime hair extension or other CC item
+local nightExtension = "46f339ee-f5ee-460e-9526-9d0884d9926c" -- Nighttime hair extension or other CC item
 
 local function OnSessionLoaded()
 	print ("Auto-Switch Hair mod was successfully loaded.")
@@ -49,12 +58,6 @@ function SetExtensionOverride(character, newExtension)
 		AddCustomVisualOverride(character, newExtension)
 	end
 end
-
-local oldHair = "" -- Old hair, if you want to change the day hair mid-game
-local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
-local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
-local dayExtension = "5a05635d-7df8-441d-a491-183fe3107668" -- Daytime hair extension
-local nightExtension = "45714916-c24d-4693-8c5c-c04c27476ebc" -- Nighttime hair extension
 
 local allHairs = { oldHair, dayHair, nightHair }
 local allExtensions = { dayExtension, nightExtension }
