@@ -12,6 +12,7 @@ local function OnSessionLoaded()
 end
 
 local locNilHair = '00000000-0000-0000-0000-000000000001'
+local locNilExtension = '00000000-0000-0000-0000-000000000001'
 function SetHairOverride(character, newHair)
 	local currentHair = GetVarUUID(character, 'Em_HairOverride')
 	if currentHair == newHair then
@@ -30,14 +31,37 @@ function SetHairOverride(character, newHair)
 	end
 end
 
+function SetExtensionOverride(character, newExtension)
+	print ("The SetExtensionOverride function was called.")
+	local currentExtension = GetVarUUID(character, 'Em_ExtensionOverride')
+	if currentExtension == newExtension then
+		return
+	end
+
+	if currentExtension and currentExtension ~= locNilExtension then
+--		print("remove hair " .. currentHair)
+		RemoveCustomVisualOvirride(character, currentExtension)
+	end
+
+	SetVarUUID(character, 'Em_ExtensionOverride', newExtension or locNilExtension)
+	if newExtension then
+--		print("set hair " .. newHair)
+		AddCustomVisualOverride(character, newExtension)
+	end
+end
+
 local oldHair = "" -- Old hair, if you want to change the day hair mid-game
 local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
 local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
+local dayExtension = "5a05635d-7df8-441d-a491-183fe3107668" -- Daytime hair extension
+local nightExtension = "45714916-c24d-4693-8c5c-c04c27476ebc" -- Nighttime hair extension
 
-local allHairs = { oldHair, nightHair, dayHair }
+local allHairs = { oldHair, dayHair, nightHair }
+local allExtensions = { dayExtension, nightExtension }
 
 local function locApplyDayHair()
 	SetHairOverride(targetCharacter, dayHair)
+	SetExtensionOverride(targetCharacter, dayExtension)
 end
 
 local function locArmorChanged(entity)
@@ -45,6 +69,7 @@ local function locArmorChanged(entity)
 
 	if entity.ArmorSetState.State == 'Vanity' then
 		SetHairOverride(targetCharacter, nightHair)
+		SetExtensionOverride(targetCharacter, nightExtension)
 	else
 		locApplyDayHair()
 --		SetHairOverride(targetCharacter, nil)
@@ -69,6 +94,13 @@ local function locInit()
 	for _, hair in pairs(allHairs) do
 		if hair ~= currentHair then
 			RemoveCustomVisualOvirride(targetCharacter, hair)
+		end
+	end
+
+	local currentExtension = GetVarUUID(targetCharacter, 'Em_ExtensionOverride')
+	for _, extension in pairs(allExtensions) do
+		if extension ~= currentExtension then
+			RemoveCustomVisualOvirride(targetCharacter, extension)
 		end
 	end
 
