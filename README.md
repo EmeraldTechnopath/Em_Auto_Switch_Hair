@@ -2,7 +2,8 @@ This script auto-switches your character's (or a companion, if you set it that w
 
 **Limitations:**
 
-Currently, you cannot change the hair mid-game by any means. It will cause multiple hairs to stack on top of each other.
+- Currently, you cannot change the hair mid-game by any means. It will cause multiple hairs to stack on top of each other.
+- Multiplayer or multi-Tav games won't work since you'd have multiple players at once.
 
 **Credits:**
 
