@@ -1,4 +1,4 @@
-This script auto-switches your character's (or a companion, if you set it that way) hair to a different hair when camp clothes are equipped. There's also an extra slot where you can add hair extensions or other CC item (like piercings).
+This script auto-switches your character's (or a companion, if you set it that way) hair to a different hair when camp clothes are equipped. There's also an extra slot where you can add hair extensions or other CC items (like piercings).
 
 **Limitations:**
 
