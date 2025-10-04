@@ -6,6 +6,7 @@ This script auto-switches your character's (or a companion, if you set it that w
 - Currently, if you change the "daytime" hair mid-game using AEE or mirror, it will cause multiple hairs to stack on top of each other. You can get around this by setting your CURRENT hair UUID in the oldHair variable in the script, and your NEW hair UUID in the dayHair variable. Then swap to camp clothes and back. Your hair should now be changed.
 - It seems like you can change the "nighttime" hair at any time by just changing the nightHair variable.
 - Multiplayer or multi-Tav games won't work since you'd have multiple players at once. You could potentially get around this by setting the targetCharacter to your Tav's UUID.
+- Your character will also receive a spell to let you change the hair on command. You'll get this spell after changing to camp clothing for the first time.
 
 **Permissions:**
 
