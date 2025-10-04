@@ -1,5 +1,7 @@
 This script auto-switches your character's (or a companion, if you set it that way) hair to a different hair when camp clothes are equipped. There's also an extra slot where you can add hair extensions or other CC items (like piercings).
 
+Your character will also receive a spell to let you change the hair on command. You'll get this spell after changing to camp clothing for the first time.
+
 **Limitations:**
 
 - When you change between armor and camp sets in the inventory screen, you will have to close the screen and reopen it to see the changes.
