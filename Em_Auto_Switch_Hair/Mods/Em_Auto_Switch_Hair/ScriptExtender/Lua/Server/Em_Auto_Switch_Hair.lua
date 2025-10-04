@@ -1,24 +1,23 @@
 
 -- The main variables to mess with are oldHair, dayHair, nightHair, and targetCharacter.
 -- Use dayExtension and nightExtension if you want hair extensions or some other CC item as well.
+-- Also, change the hairSwitchSpell variable to the spell you want to apply this effect.
 -- oldHair = The day hair that's currently on the character. Only necessary if you are swapping day hairs mid-game, otherwise, you can leave it empty.
 -- dayHair = The hair you want to display during day/armor set.
 -- nightHair = The hair you want to display during night/camp set.
 -- dayExtension = Daytime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
 -- nightExtension = Nighttime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
 -- targetCharacter = The character you want this to apply to.
+-- hairSwitchSpell = The name of the spell that will trigger the hair switch.
 
 -- Much of this code was written by wesslen. Thank you!
 
 local oldHair = "" -- Old hair, if you want to change the day hair mid-game
 local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
 local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
-local dayExtension = "" -- Daytime hair extension or other CC item
-local nightExtension = "46f339ee-f5ee-460e-9526-9d0884d9926c" -- Nighttime hair extension or other CC item
-
-local function OnSessionLoaded()
-	print ("Auto-Switch Hair mod was successfully loaded.")
-end
+local dayExtension = "75c9dcff-62e6-41b8-bac4-42be78e96913" -- Daytime hair extension or other CC item, if you don't want one, then you can leave the brackets empty ""
+local nightExtension = "46f339ee-f5ee-460e-9526-9d0884d9926c" -- Nighttime hair extension or other CC item, if you don't want one, then you can leave the brackets empty ""
+local hairSwitchSpell = "Shout_TavHairSwitch" -- Hair switch spell, I would recommend changing the name of this to avoid conflicts
 
 local locNilHair = '00000000-0000-0000-0000-000000000001'
 local locNilExtension = '00000000-0000-0000-0000-000000000001'
@@ -41,7 +40,7 @@ function SetHairOverride(character, newHair)
 end
 
 function SetExtensionOverride(character, newExtension)
-	print ("The SetExtensionOverride function was called.")
+	-- print ("The SetExtensionOverride function was called.")
 	local currentExtension = GetVarUUID(character, 'Em_ExtensionOverride')
 	if currentExtension == newExtension then
 		return
@@ -71,6 +70,7 @@ local function locArmorChanged(entity)
 --	_D(entity.ArmorSetState)
 
 	if entity.ArmorSetState.State == 'Vanity' then
+		Osi.AddSpell(targetCharacter, hairSwitchSpell) -- Grants the hair switch spell after changing to camp clothing for the first time. If you don't want your character to have a spell, then just remove this line.
 		SetHairOverride(targetCharacter, nightHair)
 		SetExtensionOverride(targetCharacter, nightExtension)
 	else
@@ -124,6 +124,33 @@ local function locOnGameStateChanged(event)
 		return
 	end
 	locInit()
+end
+
+function OnSessionLoaded()
+
+	print ("Auto-Switch Hair mod was successfully loaded.")
+
+	Ext.Osiris.RegisterListener("CastedSpell", 5, "after", function(caster, spell, spellType, spellElement, storyActionID)  
+        if spell == hairSwitchSpell then
+            currentHair = GetVarUUID(targetCharacter, 'Em_HairOverride')
+			currentExtension = GetVarUUID(targetCharacter, 'Em_ExtensionOverride')
+            -- print ("Hair switch spell was casted.")
+            -- print("Current hair after spell: " .. currentHair)
+            if currentHair == nightHair then
+				-- print ("Current hair is night.")
+                locApplyDayHair()
+            else
+                if currentHair == dayHair then
+                    -- print ("Current hair is day.")
+					SetHairOverride(targetCharacter, nightHair)
+					SetExtensionOverride(targetCharacter, nightExtension)
+				else
+					-- print ("Current hair wasn't recognized.")
+				end
+            end
+	    end
+    end)
+
 end
 
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
