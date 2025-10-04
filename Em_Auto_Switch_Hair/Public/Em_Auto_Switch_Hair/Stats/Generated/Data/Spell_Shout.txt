@@ -1,4 +1,4 @@
-// I would recommend changing the name of this spell to avoid conflicts
+// I would recommend changing the name of this spell to avoid conflicts. You can change the Icon and Display Name/Description to whatever you want to make it more thematic.
 new entry "Shout_TavHairSwitch"
 type "SpellData"
 data "SpellType" "Shout"
