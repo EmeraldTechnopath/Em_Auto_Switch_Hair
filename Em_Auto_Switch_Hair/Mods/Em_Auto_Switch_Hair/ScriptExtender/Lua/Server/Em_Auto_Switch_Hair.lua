@@ -1,12 +1,12 @@
 
 -- The main variables to mess with are oldHair, dayHair, nightHair, and targetCharacter.
--- Use dayExtension and nightExtension if you want hair extensions or some other CC item as well.
+-- Use dayExtensions and nightExtensions if you want hair extensions or some other CC item as well.
 -- Also, change the hairSwitchSpell variable to the spell you want to apply this effect.
 -- oldHair = The day hair that's currently on the character. Only necessary if you are swapping day hairs mid-game, otherwise, you can leave it empty.
 -- dayHair = The hair you want to display during day/armor set.
 -- nightHair = The hair you want to display during night/camp set.
--- dayExtension = Daytime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
--- nightExtension = Nighttime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
+-- dayExtensions = Daytime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
+-- nightExtensions = Nighttime hair extension or other CC item. You can simply empty the quotes if you don't want to use this slot.
 -- targetCharacter = The character you want this to apply to.
 -- hairSwitchSpell = The name of the spell that will trigger the hair switch.
 
@@ -15,8 +15,8 @@
 local oldHair = "" -- Old hair, if you want to change the day hair mid-game
 local dayHair = "03bb366d-e3da-4976-9dab-c7635965f330" -- Daytime hair, currently set to Luskan Plume
 local nightHair = "4aac9b41-75f7-4724-b3cd-e6ca810092a7" -- Nighttime hair, currently set to Bardic Inspiration
-local dayExtension = "75c9dcff-62e6-41b8-bac4-42be78e96913" -- Daytime hair extension or other CC item, if you don't want one, then you can leave the brackets empty ""
-local nightExtension = "46f339ee-f5ee-460e-9526-9d0884d9926c" -- Nighttime hair extension or other CC item, if you don't want one, then you can leave the brackets empty ""
+local dayExtensions = [] -- ["75c9dcff-62e6-41b8-bac4-42be78e96913"] for one extension. Comma separated values for more than one => ["abc", "edf"]. leave empty [] if no extensions
+local nightExtensions = [] -- ["46f339ee-f5ee-460e-9526-9d0884d9926c"] for one extension. Comma separated values for more than one => ["abc", "edf"]. leave empty [] if no extensions
 local hairSwitchSpell = "Shout_TavHairSwitch" -- Hair switch spell, I would recommend changing the name of this to avoid conflicts
 
 local locNilHair = '00000000-0000-0000-0000-000000000001'
@@ -39,31 +39,35 @@ function SetHairOverride(character, newHair)
 	end
 end
 
-function SetExtensionOverride(character, newExtension)
+function SetExtensionOverride(character, newExtensions)
 	-- print ("The SetExtensionOverride function was called.")
 	local currentExtension = GetVarUUID(character, 'Em_ExtensionOverride')
-	if currentExtension == newExtension then
-		return
+	for _, newExt in newExtensions do
+		if currentExtension == newExtensions then
+			return
+		end
+		
+		if currentExtension and currentExtension ~= locNilExtension then
+			-- print("remove hair " .. currentHair)
+			RemoveCustomVisualOvirride(character, currentExtension)
+		end
+	
+		SetVarUUID(character, 'Em_ExtensionOverride', newExtensions or locNilExtension)
+		if newExtensions then
+			-- print("set hair " .. newHair)
+			AddCustomVisualOverride(character, newExtensions)
+		end
 	end
 
-	if currentExtension and currentExtension ~= locNilExtension then
---		print("remove hair " .. currentHair)
-		RemoveCustomVisualOvirride(character, currentExtension)
-	end
 
-	SetVarUUID(character, 'Em_ExtensionOverride', newExtension or locNilExtension)
-	if newExtension then
---		print("set hair " .. newHair)
-		AddCustomVisualOverride(character, newExtension)
-	end
 end
 
 local allHairs = { oldHair, dayHair, nightHair }
-local allExtensions = { dayExtension, nightExtension }
+local allExtensions = { dayExtensions, nightExtensions }
 
 local function locApplyDayHair()
 	SetHairOverride(targetCharacter, dayHair)
-	SetExtensionOverride(targetCharacter, dayExtension)
+	SetExtensionOverride(targetCharacter, dayExtensions)
 end
 
 local function locArmorChanged(entity)
@@ -72,7 +76,7 @@ local function locArmorChanged(entity)
 	if entity.ArmorSetState.State == 'Vanity' then
 		Osi.AddSpell(targetCharacter, hairSwitchSpell) -- Grants the hair switch spell after changing to camp clothing for the first time. If you don't want your character to have a spell, then just remove this line.
 		SetHairOverride(targetCharacter, nightHair)
-		SetExtensionOverride(targetCharacter, nightExtension)
+		SetExtensionOverride(targetCharacter, nightExtensions)
 	else
 		locApplyDayHair()
 --		SetHairOverride(targetCharacter, nil)
@@ -101,10 +105,11 @@ local function locInit()
 	end
 
 	local currentExtension = GetVarUUID(targetCharacter, 'Em_ExtensionOverride')
-	for _, extension in pairs(allExtensions) do
-		if extension ~= currentExtension then
-			RemoveCustomVisualOvirride(targetCharacter, extension)
-		end
+	for _, extensionList in pairs(allExtensions) do
+		for _, extension in extensionList do
+			if extension ~= currentExtension then
+				RemoveCustomVisualOvirride(targetCharacter, extension)
+			end
 	end
 
 	if not entity.ArmorSetState then
@@ -143,7 +148,7 @@ function OnSessionLoaded()
                 if currentHair == dayHair then
                     -- print ("Current hair is day.")
 					SetHairOverride(targetCharacter, nightHair)
-					SetExtensionOverride(targetCharacter, nightExtension)
+					SetExtensionOverride(targetCharacter, nightExtensions)
 				else
 					-- print ("Current hair wasn't recognized.")
 				end
